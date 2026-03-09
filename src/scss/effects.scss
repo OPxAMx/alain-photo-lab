@@ -1,0 +1,42 @@
+.is-zoomed {
+  transform: scale(1.08);
+  transition: transform .3s ease;
+}
+
+.is-vignette {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 120px rgba(0,0,0,0.85);
+  }
+}
+
+.is-glitch {
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    background-size: cover;
+    mix-blend-mode: screen;
+    opacity: .4;
+  }
+
+  &::before {
+    transform: translateX(-3px);
+    filter: hue-rotate(40deg);
+  }
+
+  &::after {
+    transform: translateX(3px);
+    filter: hue-rotate(-40deg);
+  }
+}
