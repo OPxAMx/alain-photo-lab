@@ -1,12 +1,83 @@
-const { champions } = require("./champions");
+document.addEventListener("DOMContentLoaded", () => {
 
-const skills = {
-    "P": { title: "Tir Givrant", desc: "Les attaques d'Ashe ralentissent les ennemis et infligent des dégâts supplémentaires." },
-    "A": { title: "Concentration du Ranger", desc: "Ashe génère des effets Concentration quand elle attaque. Une fois le maximum atteint, elle peut lancer Concentration du ranger pour augmenter sa vitesse d'attaque et tirer une volée de flèches." },
-    "Z": { title: "Salve", desc: "Ashe tire plusieurs flèches en cône, infligeant des dégâts et appliquant son ralentissement." },
-    "E": { title: "Faucon", desc: "Ashe envoie un esprit de faucon qui révèle la zone survolée." },
-    "R": { title: "Flèche de Cristal Enchantée", desc: "Ashe tire une flèche géante qui étourdit le premier ennemi touché et inflige des dégâts." }
-};
+    const tabs = document.querySelectorAll(".subnav-item");
+    const contents = document.querySelectorAll(".tab-content");
+
+    tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => {
+
+            // Reset onglets
+            tabs.forEach(t => t.classList.remove("active"));
+            contents.forEach(c => c.classList.remove("active"));
+
+            // Active le bon onglet
+            tab.classList.add("active");
+            contents[index].classList.add("active");
+        });
+    });
+
+    // --- SYSTEME DE COMPETENCES ---
+    const skillItems = document.querySelectorAll(".skill-item");
+    const title = document.getElementById("skill-title");
+    const desc = document.getElementById("skill-description");
+
+    const skills = {
+        "P": {
+            title: "Tir Givrant",
+            desc: "Les attaques d'Ashe ralentissent les ennemis et infligent des dégâts supplémentaires."
+        },
+        "A": {
+            title: "Concentration du Ranger",
+            desc: "Ashe génère des effets Concentration quand elle attaque. Une fois le maximum atteint, elle peut lancer Concentration du ranger pour augmenter sa vitesse d'attaque et tirer une volée de flèches."
+        },
+        "Z": {
+            title: "Salve",
+            desc: "Ashe tire plusieurs flèches en cône, infligeant des dégâts et appliquant son ralentissement."
+        },
+        "E": {
+            title: "Faucon",
+            desc: "Ashe envoie un esprit de faucon qui révèle la zone survolée."
+        },
+        "R": {
+            title: "Flèche de Cristal Enchantée",
+            desc: "Ashe tire une flèche géante qui étourdit le premier ennemi touché et inflige des dégâts."
+        }
+    };
+
+    skillItems.forEach(item => {
+        item.addEventListener("click", () => {
+
+            skillItems.forEach(i => i.classList.remove("active"));
+            item.classList.add("active");
+
+            const key = item.dataset.skill;
+            title.textContent = skills[key].title;
+            desc.textContent = skills[key].desc;
+        });
+    });
+
+});
+
+
+function setMasteryProgress(percent) {
+    const circle = document.querySelector(".progress-ring-fill");
+    const text = document.getElementById("circle-percent");
+
+    const radius = 72;
+    const circumference = 2 * Math.PI * radius;
+
+    const offset = circumference - (percent / 100) * circumference;
+
+    circle.style.strokeDashoffset = offset;
+    text.textContent = percent + "%";
+}
+
+// Exemple : 72% vers maîtrise 6
+setMasteryProgress(72);
+
+
+
+// Exemple : BADGES MASTERY
 
 const badges = [
     { name: "Maîtrise 6", img: "https://3.bp.blogspot.com/-qWTkMydHHDk/Wd0almOIOWI/AAAAAAAAw_s/yV4HklRACCEBiANFGJjwLWU5fardl-KlwCLcBGAs/s1600/prestige_lvl_75_inventory.gl_emotes_prestige.png" },
@@ -15,142 +86,187 @@ const badges = [
     { name: "Next Blood", img: "https://images.saymedia-content.com/.image/t_share/MjAxNjM0NTQ0Mzc2MzU4Njc2/mtg-arena-mythic.png" }
 ];
 
-const eternals = [
-    { name: "Flèches Fatales", desc: "Nombre d'ennemis éliminés avec Flèche de Cristal Enchantée.", icon: "https://static.wikia.nocookie.net/leagueoflegends/images/5/5d/First_Blood.png", count: 128 },
-    { name: "Vision du Faucon", desc: "Zones révélées grâce à Œil du Faucon.", icon: "https://static.wikia.nocookie.net/leagueoflegends/images/4/4d/Honor_4.png", count: 342 },
-    { name: "Salve Dévastatrice", desc: "Dégâts infligés avec Salve.", icon: "https://static.wikia.nocookie.net/leagueoflegends/images/6/6a/Season_2024_Gold.png", count: "1.2M" },
-    { name: "Tir Givrant", desc: "Ennemis ralentis avec les attaques de base.", icon: "https://static.wikia.nocookie.net/leagueoflegends/images/1/1d/Champion_Mastery_Level_5_Flair.png", count: 982 }
-];
-
-const skins = [
-    { name: "Ashe Classique", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_0.jpg", rarity: "commun" },
-    { name: "Ashe Reine", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_1.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_1.jpg", rarity: "épique" },
-    { name: "Ashe Projet", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_6.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_6.jpg", rarity: "légendaire" },
-    { name: "Ashe Cosmique", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg", rarity: "ultime" },
-    { name: "Ashe Cosmique", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg", rarity: "ultime" },
-    { name: "Ashe Cosmique", splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg", tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg", rarity: "ultime" }
-];
-
-let favoriteSkin = localStorage.getItem("favoriteSkin") || null;
-
-document.addEventListener("DOMContentLoaded", () => {
-    const tabs = document.querySelectorAll(".subnav-item");
-    const contents = document.querySelectorAll(".tab-content");
-    const skillTitle = document.getElementById("skill-title");
-    const skillDesc = document.getElementById("skill-description");
-
-    // Tabs avec délégation d'événements
-    document.querySelector(".subnav")?.addEventListener("click", (e) => {
-        const tab = e.target.closest(".subnav-item");
-        if (!tab) return;
-        
-        const index = Array.from(tabs).indexOf(tab);
-        document.querySelector(".subnav-item.active")?.classList.remove("active");
-        document.querySelector(".tab-content.active")?.classList.remove("active");
-        tab.classList.add("active");
-        contents[index]?.classList.add("active");
-    });
-
-    // Skills avec délégation d'événements
-    document.querySelector(".skills-list")?.addEventListener("click", (e) => {
-        const item = e.target.closest(".skill-item");
-        if (!item) return;
-        
-        document.querySelector(".skill-item.active")?.classList.remove("active");
-        item.classList.add("active");
-        
-        const skill = skills[item.dataset.skill];
-        if (skill) {
-            skillTitle.textContent = skill.title;
-            skillDesc.textContent = skill.desc;
-        }
-    });
-
-    setMasteryProgress(72);
-    loadBadges();
-    loadEternals();
-    loadSkins();
-});
-
-
-function setMasteryProgress(percent) {
-    const circle = document.querySelector(".progress-ring-fill");
-    const text = document.getElementById("circle-percent");
-    if (!circle || !text) return;
-
-    const circumference = 452.39; // 2 * Math.PI * 72
-    circle.style.strokeDashoffset = circumference * (1 - percent / 100);
-    text.textContent = `${percent}%`;
-}
-
 function loadBadges() {
     const grid = document.getElementById("badge-grid");
-    if (!grid) return;
-    grid.innerHTML = badges.map(b => `<div class="badge"><img src="${b.img}"><span>${b.name}</span></div>`).join("");
+    grid.innerHTML = "";
+
+    badges.forEach(b => {
+        const div = document.createElement("div");
+        div.className = "badge";
+        div.innerHTML = `
+            <img src="${b.img}">
+            <span>${b.name}</span>
+        `;
+        grid.appendChild(div);
+    });
 }
 
+loadBadges();
 
 
+
+
+//  ==== eternal-card====
+
+
+function animateEternals() {
+    const cards = document.querySelectorAll(".eternal-card");
+
+    cards.forEach(card => {
+        const valueElement = card.querySelector(".eternal-value");
+        const target = parseInt(card.dataset.count);
+        let current = 0;
+
+        const interval = setInterval(() => {
+            current += Math.ceil(target / 50);
+            if (current >= target) {
+                current = target;
+                clearInterval(interval);
+            }
+            valueElement.textContent = current;
+        }, 50);
+    });
+}
+
+const eternals = [
+    {
+        name: "Flèches Fatales",
+        desc: "Nombre d'ennemis éliminés avec Flèche de Cristal Enchantée.",
+        icon: "https://static.wikia.nocookie.net/leagueoflegends/images/5/5d/First_Blood.png",
+        count: 128
+    },
+    {
+        name: "Vision du Faucon",
+        desc: "Zones révélées grâce à Œil du Faucon.",
+        icon: "https://static.wikia.nocookie.net/leagueoflegends/images/4/4d/Honor_4.png",
+        count: 342
+    },
+    {
+        name: "Salve Dévastatrice",
+        desc: "Dégâts infligés avec Salve.",
+        icon: "https://static.wikia.nocookie.net/leagueoflegends/images/6/6a/Season_2024_Gold.png",
+        count: "1.2M"
+    },
+    {
+        name: "Tir Givrant",
+        desc: "Ennemis ralentis avec les attaques de base.",
+        icon: "https://static.wikia.nocookie.net/leagueoflegends/images/1/1d/Champion_Mastery_Level_5_Flair.png",
+        count: 982
+    }
+];
 
 function loadEternals() {
     const list = document.getElementById("eternals-list");
-    if (!list) return;
-    list.innerHTML = eternals.map(e => `
-        <div class="eternal-card">
+    list.innerHTML = "";
+
+    eternals.forEach(e => {
+        const card = document.createElement("div");
+        card.className = "eternal-card";
+
+        card.innerHTML = `
             <img src="${e.icon}" class="eternal-icon">
             <div class="eternal-title">${e.name}</div>
             <div class="eternal-desc">${e.desc}</div>
             <div class="eternal-count">${e.count}</div>
-        </div>
-    `).join("");
+        `;
+
+        list.appendChild(card);
+    });
 }
 
+loadEternals();
+
+
+// skins generator //
+
+
+const skins = [
+    {
+        name: "Ashe Classique",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_0.jpg",
+        rarity: "commun"
+    },
+    {
+        name: "Ashe Reine",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_1.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_1.jpg",
+        rarity: "épique"
+    },
+    {
+        name: "Ashe Projet",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_6.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_6.jpg",
+        rarity: "légendaire"
+    },
+    {
+        name: "Ashe Cosmique",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg",
+        rarity: "ultime"
+    },
+	{
+        name: "Ashe Cosmique",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg",
+        rarity: "ultime"
+    },
+	{
+        name: "Ashe Cosmique",
+        splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_17.jpg",
+        tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_17.jpg",
+        rarity: "ultime"
+    },
+];
+
+let favoriteSkin = localStorage.getItem("favoriteSkin") || null;
 
 function loadSkins() {
     const carousel = document.getElementById("skins-carousel");
     const previewImg = document.getElementById("skin-preview-img");
     const previewName = document.getElementById("skin-preview-name");
     const previewRarity = document.getElementById("skin-preview-rarity");
-    if (!carousel || !previewImg) return;
+    const favBtn = document.getElementById("fav-btn");
 
-    carousel.innerHTML = skins.map(skin => `
-        <div class="skin-card" data-splash="${skin.splash}" data-name="${skin.name}" data-rarity="${skin.rarity}">
+    carousel.innerHTML = "";
+
+    skins.forEach(skin => {
+        const card = document.createElement("div");
+        card.className = "skin-card";
+
+        // Tilt 3D
+        card.addEventListener("mousemove", e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            card.style.transform = `rotateY(${x / 20}deg) rotateX(${-y / 20}deg) scale(1.08)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            card.style.transform = "rotateY(0deg) rotateX(0deg) scale(1)";
+        });
+
+        card.innerHTML = `
             <img src="${skin.tile}">
             <span class="rarity-${skin.rarity}">${skin.name}</span>
-        </div>
-    `).join("");
+        `;
 
-    // Délégation d'événements pour les skins
-    carousel.addEventListener("mouseover", (e) => {
-        const card = e.target.closest(".skin-card");
-        if (!card) return;
-        
-        const handleMove = (ev) => {
-            const rect = card.getBoundingClientRect();
-            const x = (ev.clientX - rect.left - rect.width / 2) / 20;
-            const y = -(ev.clientY - rect.top - rect.height / 2) / 20;
-            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg) scale(1.08)`;
-        };
-        
-        card.addEventListener("mousemove", handleMove);
-        card.addEventListener("mouseleave", () => {
-            card.style.transform = "";
-            card.removeEventListener("mousemove", handleMove);
-        }, { once: true });
-    });
+        card.addEventListener("click", () => {
+            previewImg.style.opacity = 0;
 
-    carousel.addEventListener("click", (e) => {
-        const card = e.target.closest(".skin-card");
-        if (!card) return;
-        
-        previewImg.style.opacity = 0;
-        setTimeout(() => {
-            previewImg.src = card.dataset.splash;
-            previewName.textContent = card.dataset.name;
-            previewRarity.textContent = card.dataset.rarity.toUpperCase();
-            previewRarity.className = `skin-rarity rarity-${card.dataset.rarity}`;
-            previewImg.style.opacity = 1;
-        }, 200);
+            setTimeout(() => {
+                previewImg.src = skin.splash;
+                previewName.textContent = skin.name;
+                previewRarity.textContent = skin.rarity.toUpperCase();
+                previewRarity.className = "skin-rarity rarity-" + skin.rarity;
+                previewImg.style.opacity = 1;
+
+                favBtn.classList.toggle("active", favoriteSkin === skin.name);
+                favBtn.textContent = favoriteSkin === skin.name ? "★ Favori" : "☆ Ajouter aux favoris";
+            }, 200);
+        });
+
+        carousel.appendChild(card);
     });
 
     // Charger le premier skin
@@ -185,6 +301,193 @@ document.getElementById("carousel-left").onclick = () => {
 document.getElementById("carousel-right").onclick = () => {
     document.getElementById("skins-carousel").scrollBy({ left: 300, behavior: "smooth" });
 };
+
+// skin animation //
+
+const champions = [
+    // ============================
+    // ASHE
+    // ============================
+    {
+        id: "ashe",
+        name: "Ashe",
+        title: "Archère de Givre",
+        icon: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Ashe.png",
+				background: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg",
+				spotlight: "https://d28xe8vt774jo5.cloudfront.net/champion-abilities/0022/ability_0022_R1.mp4",
+
+        overview: {
+            damage: 80,
+            style: 60,
+            difficulty: 40,
+            description: "Chef de guerre sublimé de la tribu des Avarosans..."
+        },
+
+        skills: {
+            P: { title: "Tir givrant", desc: "Les attaques d’Ashe ralentissent..." },
+            A: { title: "Concentration du Ranger", desc: "Ashe génère des effets..." },
+            Z: { title: "Salve", desc: "Ashe tire plusieurs flèches..." },
+            E: { title: "Faucon", desc: "Ashe envoie un esprit..." },
+            R: { title: "Flèche de Cristal Enchantée", desc: "Ashe tire une flèche géante..." }
+        },
+
+        mastery: {
+            level: 5,
+            points: 48920,
+            progress: 72
+        },
+
+        eternals: [
+            { name: "Flèches Fatales", count: 128 },
+            { name: "Vision du Faucon", count: 342 },
+            { name: "Salve Dévastatrice", count: 1200000 },
+            { name: "Tir Givrant", count: 982 }
+        ],
+
+        skins: [
+            {
+                name: "Ashe Classique",
+                rarity: "commun",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_0.jpg"
+            },
+            {
+                name: "Ashe Reine",
+                rarity: "épique",
+						
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_1.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ashe_1.jpg"
+            }
+        ]
+    },
+
+    // ============================
+    // AHRI
+    // ============================
+    {
+        id: "ahri",
+        name: "Ahri",
+        title: "Renarde à Neuf Queues",
+        icon: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Ahri.png",
+				background: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+				spotlight: "https://d28xe8vt774jo5.cloudfront.net/champion-abilities/0103/ability_0103_R1.mp4",
+
+
+        overview: {
+            damage: 70,
+            style: 90,
+            difficulty: 60,
+            description: "Ahri manipule les émotions et l'essence vitale de ses ennemis..."
+        },
+
+        skills: {
+            P: { title: "Vol d'essence", desc: "Ahri récupère de la vie en touchant des ennemis." },
+            A: { title: "Orbe d'illusion", desc: "Ahri lance un orbe qui revient vers elle." },
+            Z: { title: "Flammes de renard", desc: "Trois flammes attaquent les ennemis proches." },
+            E: { title: "Charme", desc: "Ahri charme un ennemi, le forçant à marcher vers elle." },
+            R: { title: "Assaut spirituel", desc: "Ahri se projette en avant et inflige des dégâts." }
+        },
+
+        mastery: {
+            level: 7,
+            points: 132000,
+            progress: 100
+        },
+
+        eternals: [
+            { name: "Charme Fatal", count: 540 },
+            { name: "Essence Dérobée", count: 2100 },
+            { name: "Assauts Spirituels", count: 380 },
+            { name: "Flammes Touchées", count: 890 }
+        ],
+
+        skins: [
+            {
+                name: "Ahri Classique",
+                rarity: "commun",
+							
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ahri_0.jpg"
+            },
+            {
+                name: "Ahri Popstar",
+                rarity: "épique",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_7.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ahri_7.jpg"
+            },
+            {
+                name: "Ahri K/DA",
+                rarity: "légendaire",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_14.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ahri_14.jpg"
+            }
+        ]
+    },
+
+    // ============================
+    // GAREN
+    // ============================
+    {
+        id: "garen",
+        name: "Garen",
+        title: "Puissance de Demacia",
+        icon: "https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/Garen.png",
+				background: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+				spotlight: "https://d28xe8vt774jo5.cloudfront.net/champion-abilities/0086/ability_0086_R1.mp4",
+
+
+        overview: {
+            damage: 65,
+            style: 50,
+            difficulty: 30,
+            description: "Garen est un guerrier noble et puissant, symbole de Demacia..."
+        },
+
+        skills: {
+            P: { title: "Persévérance", desc: "Garen régénère rapidement sa vie hors combat." },
+            A: { title: "Coup Décisif", desc: "Garen inflige un coup puissant et réduit au silence." },
+            Z: { title: "Courage", desc: "Garen gagne un bouclier et des résistances." },
+            E: { title: "Jugement", desc: "Garen tourne sur lui-même et inflige des dégâts." },
+            R: { title: "Justice de Demacia", desc: "Garen exécute un ennemi." }
+        },
+
+        mastery: {
+            level: 6,
+            points: 78000,
+            progress: 40
+        },
+
+        eternals: [
+            { name: "Jugements Fatals", count: 1200 },
+            { name: "Exécutions", count: 240 },
+            { name: "Boucliers Absorbés", count: 54000 },
+            { name: "Coup Décisif", count: 890 }
+        ],
+
+        skins: [
+            {
+                name: "Garen Classique",
+                rarity: "commun",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Garen_0.jpg"
+            },
+            {
+                name: "Garen Chevalier d’Acier",
+                rarity: "épique",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_1.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Garen_1.jpg"
+            },
+            {
+                name: "Garen Dieu-Roi",
+                rarity: "ultime",
+                splash: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_23.jpg",
+							background: "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg",
+                tile: "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Garen_23.jpg"
+            }
+        ]
+    }
+];
+
 
 function loadChampionCarousel() {
     const carousel = document.getElementById("champion-carousel");
