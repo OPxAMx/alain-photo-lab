@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Alain Photo Lab</title>
+  <link rel="stylesheet" href="src/scss/main.css">
+</head>
+<body>
+
+  <div id="app">
+    <aside id="panel">
+      <h1>Photo Lab</h1>
+
+      <div id="dropzone">Glisse une image ici</div>
+
+      <label>Hue rotate</label>
+      <input type="range" id="hueSlider" min="0" max="360" value="0">
+
+      <button data-toggle="zoom">Zoom</button>
+      <button data-toggle="vignette">Vignette</button>
+      <button data-toggle="glitch">Glitch</button>
+
+      <div id="presets"></div>
+
+      <label>
+        <input type="checkbox" id="aiToggle">
+        IA Takeover
+      </label>
+    </aside>
+
+    <main id="viewer">
+      <img id="photo" src="assets/images/default.jpg">
+    </main>
+  </div>
+
+  <script type="module" src="src/js/main.js"></script>
+</body>
+</html>
