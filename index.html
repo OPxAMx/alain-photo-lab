@@ -1,4 +1,367 @@
-@ -366,164 +366,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashe – Archère de Givre</title>
+</head>
+
+<body>
+<audio id="sfx-click" src="sounds/lol-click.mp3"></audio>
+<audio id="sfx-fire" src="sounds/fire-whoosh.mp3"></audio>
+<audio id="sfx-magic" src="sounds/magic-chime.mp3"></audio>
+<div id="game-loader">
+    <div class="loader-animation"></div>
+    <span id="loader-text">Chargement...</span>
+</div>
+<div id="universe-transition"></div>
+
+<!-- ========================= -->
+<!-- HEADER -->
+<!-- ========================= -->
+<header class="lol-header">
+    <div class="left-section">
+        <button class="play-btn">JOUER</button>
+
+        <nav class="game-switch">
+            <span class="active">LOL</span>
+            <span>DVI</span>
+            <span>RS</span>
+        </nav>
+    </div>
+	
+	
+<div class="center-section champion-carousel" id="champion-carousel">
+    <!-- Les champions seront injectés ici via JS -->
+</div>
+
+ <!--   <div class="center-section">
+        <div class="icon"></div>
+        <div class="icon"></div>
+        <div class="icon active" id="Ashe"></div>
+        <div class="icon"></div>
+        <div class="icon"></div>
+    </div> -->
+
+    <div class="right-section">
+        <div class="currencies">
+            <div class="currency"><span class="value">0</span></div>
+            <div class="currency"><span class="value">1750</span></div>
+        </div>
+
+        <div class="profile">
+            <div class="avatar"></div>
+            <div class="info">
+                <div class="name">orxamx</div>
+                <div class="status">En ligne</div>
+            </div>
+            <div class="level">99</div>
+        </div>
+    </div>
+</header>
+
+<!-- ========================= -->
+<!-- SUBNAV -->
+<!-- ========================= -->
+<div class="lol-subnav">
+    <div class="subnav-item active"><svg viewBox="0 0 576 512" width="100" title="address-card" class="subnav-icon">
+  <path d="M528 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-352 96c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zm112 236.8c0 10.6-10 19.2-22.4 19.2H86.4C74 384 64 375.4 64 364.8v-19.2c0-31.8 30.1-57.6 67.2-57.6h5c12.3 5.1 25.7 8 39.8 8s27.6-2.9 39.8-8h5c37.1 0 67.2 25.8 67.2 57.6v19.2zM512 312c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-64c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16zm0-64c0 4.4-3.6 8-8 8H360c-4.4 0-8-3.6-8-8v-16c0-4.4 3.6-8 8-8h144c4.4 0 8 3.6 8 8v16z" />
+</svg>Vue d'ensemble</div>
+    <div class="subnav-item"><svg viewBox="0 0 384 512" width="100" title="fist-raised" class="subnav-icon">
+  <path d="M255.98 160V16c0-8.84-7.16-16-16-16h-32c-8.84 0-16 7.16-16 16v146.93c5.02-1.78 10.34-2.93 15.97-2.93h48.03zm128 95.99c-.01-35.34-28.66-63.99-63.99-63.99H207.85c-8.78 0-15.9 7.07-15.9 15.85v.56c0 26.27 21.3 47.59 47.57 47.59h35.26c9.68 0 13.2 3.58 13.2 8v16.2c0 4.29-3.59 7.78-7.88 8-44.52 2.28-64.16 24.71-96.05 72.55l-6.31 9.47a7.994 7.994 0 0 1-11.09 2.22l-13.31-8.88a7.994 7.994 0 0 1-2.22-11.09l6.31-9.47c15.73-23.6 30.2-43.26 47.31-58.08-17.27-5.51-31.4-18.12-38.87-34.45-6.59 3.41-13.96 5.52-21.87 5.52h-32c-12.34 0-23.49-4.81-32-12.48C71.48 251.19 60.33 256 48 256H16c-5.64 0-10.97-1.15-16-2.95v77.93c0 33.95 13.48 66.5 37.49 90.51L63.99 448v64h255.98v-63.96l35.91-35.92A96.035 96.035 0 0 0 384 344.21l-.02-88.22zm-32.01-90.09V48c0-8.84-7.16-16-16-16h-32c-8.84 0-16 7.16-16 16v112h32c11.28 0 21.94 2.31 32 5.9zM16 224h32c8.84 0 16-7.16 16-16V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v128c0 8.84 7.16 16 16 16zm95.99 0h32c8.84 0 16-7.16 16-16V48c0-8.84-7.16-16-16-16h-32c-8.84 0-16 7.16-16 16v160c0 8.84 7.16 16 16 16z" />
+</svg>Compétences</div>
+    <div class="subnav-item"><svg viewBox="0 0 576 512" width="100" title="gem" class="subnav-icon">
+  <path d="M485.5 0L576 160H474.9L405.7 0h79.8zm-128 0l69.2 160H149.3L218.5 0h139zm-267 0h79.8l-69.2 160H0L90.5 0zM0 192h100.7l123 251.7c1.5 3.1-2.7 5.9-5 3.3L0 192zm148.2 0h279.6l-137 318.2c-1 2.4-4.5 2.4-5.5 0L148.2 192zm204.1 251.7l123-251.7H576L357.3 446.9c-2.3 2.7-6.5-.1-5-3.2z" />
+</svg>Maîtrise</div>
+    <div class="subnav-item"><svg viewBox="0 0 448 512" width="100" title="dna" class="subnav-icon">
+  <path d="M.1 494.1c-1.1 9.5 6.3 17.8 15.9 17.8l32.3.1c8.1 0 14.9-5.9 16-13.9.7-4.9 1.8-11.1 3.4-18.1H380c1.6 6.9 2.9 13.2 3.5 18.1 1.1 8 7.9 14 16 13.9l32.3-.1c9.6 0 17.1-8.3 15.9-17.8-4.6-37.9-25.6-129-118.9-207.7-17.6 12.4-37.1 24.2-58.5 35.4 6.2 4.6 11.4 9.4 17 14.2H159.7c21.3-18.1 47-35.6 78.7-51.4C410.5 199.1 442.1 65.8 447.9 17.9 449 8.4 441.6.1 432 .1L399.6 0c-8.1 0-14.9 5.9-16 13.9-.7 4.9-1.8 11.1-3.4 18.1H67.8c-1.6-7-2.7-13.1-3.4-18.1-1.1-8-7.9-14-16-13.9L16.1.1C6.5.1-1 8.4.1 17.9 5.3 60.8 31.4 171.8 160 256 31.5 340.2 5.3 451.2.1 494.1zM224 219.6c-25.1-13.7-46.4-28.4-64.3-43.6h128.5c-17.8 15.2-39.1 30-64.2 43.6zM355.1 96c-5.8 10.4-12.8 21.1-21 32H114c-8.3-10.9-15.3-21.6-21-32h262.1zM92.9 416c5.8-10.4 12.8-21.1 21-32h219.4c8.3 10.9 15.4 21.6 21.2 32H92.9z" />
+</svg>Éternels</div>
+    <div class="subnav-item"><svg viewBox="0 0 384 512" width="100" title="ghost" class="subnav-icon">
+  <path d="M186.1.09C81.01 3.24 0 94.92 0 200.05v263.92c0 14.26 17.23 21.39 27.31 11.31l24.92-18.53c6.66-4.95 16-3.99 21.51 2.21l42.95 48.35c6.25 6.25 16.38 6.25 22.63 0l40.72-45.85c6.37-7.17 17.56-7.17 23.92 0l40.72 45.85c6.25 6.25 16.38 6.25 22.63 0l42.95-48.35c5.51-6.2 14.85-7.17 21.51-2.21l24.92 18.53c10.08 10.08 27.31 2.94 27.31-11.31V192C384 84 294.83-3.17 186.1.09zM128 224c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32zm128 0c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z" />
+</svg>Skins</div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE -->
+<!-- ========================= -->
+<div class="tab-content active" id="overview-tab">
+    <div class="page">
+<div id="particle-layer"></div>
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <div class="champ-name">ASHE</div>
+            <div class="champ-title">ARCHÈRE DE GIVRE</div>
+
+            <div class="section-title">Dégâts :</div>
+            <div class="bar"><div class="bar-fill" style="width: 80%;"></div></div>
+
+            <div class="section-title">Style :</div>
+            <div class="bar"><div class="bar-fill" style="width: 60%;"></div></div>
+
+            <div class="section-title">Difficulté :</div>
+            <div class="bar"><div class="bar-fill" style="width: 40%;"></div></div>
+
+            <div class="description">
+                Chef de guerre sublimé de la tribu des Avarosans, Ashe est à la tête de la plus vaste horde des terres du nord.
+                Stoïque, intelligente et idéaliste, mais mal à l’aise dans son rôle de leader, elle puise dans la magie ancestrale
+                de sa lignée pour manier un arc de glace pure.
+            </div>
+
+            <div class="btn">Spotlight Video</div>
+        </div>
+
+        <div class="content-wrapper"></div>
+    </div>
+</div>
+        <!-- RIGHT PANEL -->
+
+
+
+<!-- ========================= -->
+<!-- TAB CONTENT -->
+<!-- ========================= -->
+
+<div class="tab-content" id="skills-tab">
+    <div class="skills-container">
+
+        <div class="skills-list">
+            <div class="skill-item active" data-skill="A">
+                <svg viewBox="0 0 640 512" width="100" title="praying-hands" class="skill-icon">
+  <path d="M272 191.91c-17.6 0-32 14.4-32 32v80c0 8.84-7.16 16-16 16s-16-7.16-16-16v-76.55c0-17.39 4.72-34.47 13.69-49.39l77.75-129.59c9.09-15.16 4.19-34.81-10.97-43.91-14.45-8.67-32.72-4.3-42.3 9.21-.2.23-.62.21-.79.48l-117.26 175.9C117.56 205.9 112 224.31 112 243.29v80.23l-90.12 30.04A31.974 31.974 0 0 0 0 383.91v96c0 10.82 8.52 32 32 32 2.69 0 5.41-.34 8.06-1.03l179.19-46.62C269.16 449.99 304 403.8 304 351.91v-128c0-17.6-14.4-32-32-32zm346.12 161.73L528 323.6v-80.23c0-18.98-5.56-37.39-16.12-53.23L394.62 14.25c-.18-.27-.59-.24-.79-.48-9.58-13.51-27.85-17.88-42.3-9.21-15.16 9.09-20.06 28.75-10.97 43.91l77.75 129.59c8.97 14.92 13.69 32 13.69 49.39V304c0 8.84-7.16 16-16 16s-16-7.16-16-16v-80c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 51.89 34.84 98.08 84.75 112.34l179.19 46.62c2.66.69 5.38 1.03 8.06 1.03 23.48 0 32-21.18 32-32v-96c0-13.77-8.81-25.99-21.88-30.35z" />
+</svg>
+                <span>P</span>
+            </div>
+
+            <div class="skill-item" data-skill="A">
+                <svg viewBox="0 0 512 512" width="100" title="shield-alt" class="skill-icon">
+  <path d="M466.5 83.7l-192-80a48.15 48.15 0 0 0-36.9 0l-192 80C27.7 91.1 16 108.6 16 128c0 198.5 114.5 335.7 221.5 380.3 11.8 4.9 25.1 4.9 36.9 0C360.1 472.6 496 349.3 496 128c0-19.4-11.7-36.9-29.5-44.3zM256.1 446.3l-.1-381 175.9 73.3c-3.3 151.4-82.1 261.1-175.8 307.7z" />
+</svg>
+                <span>A</span>
+            </div>
+
+            <div class="skill-item" data-skill="Z">
+                <svg viewBox="0 0 512 512" width="100" title="mortar-pestle" class="skill-icon">
+  <path d="M501.54 60.91c17.22-17.22 12.51-46.25-9.27-57.14a35.696 35.696 0 0 0-37.37 3.37L251.09 160h151.37l99.08-99.09zM496 192H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h16c0 80.98 50.2 150.11 121.13 178.32-12.76 16.87-21.72 36.8-24.95 58.69-1.46 9.92 6.04 18.98 16.07 18.98h223.5c10.03 0 17.53-9.06 16.07-18.98-3.22-21.89-12.18-41.82-24.95-58.69C429.8 406.11 480 336.98 480 256h16c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z" />
+</svg>
+                <span>Z</span>
+            </div>
+
+            <div class="skill-item" data-skill="E">
+                <svg viewBox="0 0 576 512" width="100" title="hand-holding-heart" class="skill-icon">
+  <path d="M275.3 250.5c7 7.4 18.4 7.4 25.5 0l108.9-114.2c31.6-33.2 29.8-88.2-5.6-118.8-30.8-26.7-76.7-21.9-104.9 7.7L288 36.9l-11.1-11.6C248.7-4.4 202.8-9.2 172 17.5c-35.3 30.6-37.2 85.6-5.6 118.8l108.9 114.2zm290 77.6c-11.8-10.7-30.2-10-42.6 0L430.3 402c-11.3 9.1-25.4 14-40 14H272c-8.8 0-16-7.2-16-16s7.2-16 16-16h78.3c15.9 0 30.7-10.9 33.3-26.6 3.3-20-12.1-37.4-31.6-37.4H192c-27 0-53.1 9.3-74.1 26.3L71.4 384H16c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h356.8c14.5 0 28.6-4.9 40-14L564 377c15.2-12.1 16.4-35.3 1.3-48.9z" />
+</svg>
+                <span>E</span>
+            </div>
+
+            <div class="skill-item" data-skill="R">
+                <svg viewBox="0 0 512 512" width="100" title="meteor" class="skill-icon">
+  <path d="M511.328,20.8027c-11.60759,38.70264-34.30724,111.70173-61.30311,187.70077,6.99893,2.09372,13.4042,4,18.60653,5.59368a16.06158,16.06158,0,0,1,9.49854,22.906c-22.106,42.29635-82.69047,152.795-142.47819,214.40356-.99984,1.09373-1.99969,2.5-2.99954,3.49995A194.83046,194.83046,0,1,1,57.085,179.41009c.99985-1,2.40588-2,3.49947-3,61.59994-59.90549,171.97367-120.40473,214.37343-142.4982a16.058,16.058,0,0,1,22.90274,9.49988c1.59351,5.09368,3.49947,11.5936,5.5929,18.59351C379.34818,35.00565,452.43074,12.30281,491.12794.70921A16.18325,16.18325,0,0,1,511.328,20.8027ZM319.951,320.00207A127.98041,127.98041,0,1,0,191.97061,448.00046,127.97573,127.97573,0,0,0,319.951,320.00207Zm-127.98041-31.9996a31.9951,31.9951,0,1,1-31.9951-31.9996A31.959,31.959,0,0,1,191.97061,288.00247Zm31.9951,79.999a15.99755,15.99755,0,1,1-15.99755-15.9998A16.04975,16.04975,0,0,1,223.96571,368.00147Z" />
+</svg>
+                <span>R</span>
+            </div>
+        </div>
+
+        <div class="skill-display">
+            <h2 id="skill-title">Concentration du Ranger</h2>
+            <p id="skill-description">
+                Ashe génère des effets Concentration quand elle attaque. Une fois le maximum d'effets Concentration atteint,
+                Ashe peut lancer Concentration du ranger pour consommer tous les effets, ce qui augmente temporairement sa
+                vitesse d'attaque et transforme son attaque de base en une puissante volée de flèches.
+            </p>
+
+            <div class="skill-image"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="tab-content" id="mastery-tab">
+    <div class="mastery-container">
+
+        <div class="mastery-header">
+            <h2>Maîtrise du Champion</h2>
+            <p>Progression, niveau et récompenses obtenues avec Ashe.</p>
+        </div>
+
+        <div class="mastery-level">
+            <div class="mastery-icon mastery-5"></div>
+            <div class="mastery-info">
+                <h3>Niveau de Maîtrise : 5</h3>
+                <p>Points de maîtrise : <strong>48920</strong></p>
+                <p>Prochain niveau : <strong>Maîtrise 6</strong></p>
+            </div>
+        </div>
+
+        <div class="progression-section">
+            <h3>Progression vers le niveau suivant</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 68%;"></div>
+            </div>
+            <p class="progress-text">72% complété</p>
+        </div>
+
+        <div class="badges-section">
+            <h3>Badges obtenus</h3>
+            <div class="badges-grid">
+                <div class="badge">
+                    <img src="https://hotmart.s3.amazonaws.com/product_pictures/c587c963-b7b8-4b96-b991-becdc0308edb/10UvSat.png" alt="">
+                    <span>Maîtrise 5</span>
+                </div>
+                <div class="badge">
+                    <img src="https://3.bp.blogspot.com/-DSVslnWEAYU/Wd0akM0Py0I/AAAAAAAAw_g/SLmvq1INvcc3df3-WsTRVXxxnkxmfC9rQCLcBGAs/s1600/prestige_lvl_100_inventory.gl_emotes_prestige.png" alt="">
+                    <span>Honneur 4</span>
+                </div>
+                <div class="badge">
+                    <img src="https://www.gamerfocus.co/wp-content/uploads/2020/11/Legends-of-Runeterra-Torneo-1.png" alt="">
+                    <span>Or 2024</span>
+                </div>
+                <div class="badge">
+                    <img src="https://3.bp.blogspot.com/-ztL1x8FHlyw/Wd0akAuwU5I/AAAAAAAAw_c/x36rRq2EwuY7_eGsY_xbWnTiPoJng98vwCLcBGAs/s1600/prestige_lvl_150_inventory.gl_emotes_prestige.png" alt="">
+                    <span>First Blood</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mastery-circle-section">
+            <h3>Progression vers Maîtrise 6</h3>
+            <div class="circle-wrapper">
+                <svg class="progress-ring" width="160" height="160">
+                    <circle class="progress-ring-bg" cx="80" cy="80" r="70" />
+                    <circle class="progress-ring-fill" cx="80" cy="80" r="70" />
+                </svg>
+                <div class="circle-text">
+                    <span id="circle-percent">72%</span>
+                    <small>vers Maîtrise 6</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="badges-section">
+            <h3>Badges A Obtenir</h3>
+            <div class="badges-grid" id="badge-grid"></div>
+        </div>
+
+        <div class="advanced-stats">
+            <h3>Statistiques avancées</h3>
+            <div class="stats-grid">
+                <div class="stat-adv">
+                    <h4>KDA moyen</h4>
+                    <span id="kda">3.4</span>
+                </div>
+                <div class="stat-adv">
+                    <h4>CS / min</h4>
+                    <span id="csmin">6.8</span>
+                </div>
+                <div class="stat-adv">
+                    <h4>Taux de victoire</h4>
+                    <span id="winrate">58%</span>
+                </div>
+                <div class="stat-adv">
+                    <h4>Dégâts par partie</h4>
+                    <span id="dmg">21430</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="tab-content" id="eternals-tab">
+    <div class="eternals-container">
+        <div class="eternals-header">
+            <h2>Éternels</h2>
+            <p>Statistiques uniques et exploits mémorables réalisés avec Ashe.</p>
+        </div>
+
+        <div class="eternals-global">
+            <h3>Progression Globale</h3>
+            <div class="eternal-progress-bar">
+                <div class="eternal-progress-fill" style="width: 45%;"></div>
+            </div>
+            <p class="eternal-progress-text">45% des Éternels complétés</p>
+        </div>
+
+        <div class="eternals-list" id="eternals-list"></div>
+    </div>
+</div>
+
+<div class="tab-content" id="skins-tab">
+    <div class="skins-container">
+        <div class="skins-header">
+            <h2>Skins</h2>
+            <p>Sélectionnez un skin pour afficher l'aperçu.</p>
+        </div>
+
+        <div class="skin-preview">
+            <img id="skin-preview-img" src="">
+            <div class="skin-name" id="skin-preview-name"></div>
+            <div class="skin-rarity" id="skin-preview-rarity"></div>
+            <button id="fav-btn" class="fav-btn">☆ Ajouter aux favoris</button>
+        </div>
+
+        <div class="carousel-wrapper">
+            <button class="carousel-btn left" id="carousel-left">‹</button>
+            <div class="skins-carousel" id="skins-carousel"></div>
+            <button class="carousel-btn right" id="carousel-right">›</button>
+        </div>
+    </div>
+</div>
+
+<div id="spotlight-modal">
+    <div class="spotlight-content">
+        <span id="spotlight-close">×</span>
+        <h2 id="spotlight-title"></h2>
+        <video id="spotlight-video" controls autoplay></video>
+    </div>
+</div>
+
+<script src="script.js"></script> 0 512 512" width="100" title="mortar-pestle" class="skill-icon">
+  <path d="M501.54 60.91c17.22-17.22 12.51-46.25-9.27-57.14a35.696 35.696 0 0 0-37.37 3.37L251.09 160h151.37l99.08-99.09zM496 192H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h16c0 80.98 50.2 150.11 121.13 178.32-12.76 16.87-21.72 36.8-24.95 58.69-1.46 9.92 6.04 18.98 16.07 18.98h223.5c10.03 0 17.53-9.06 16.07-18.98-3.22-21.89-12.18-41.82-24.95-58.69C429.8 406.11 480 336.98 480 256h16c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z" />
+</svg>
+                <span>Z</span>
+            </div>
+
+            <div class="skill-item" data-skill="E">
+                <svg viewBox="0 0 576 512" width="100" title="hand-holding-heart" class="skill-icon">
+  <path d="M275.3 250.5c7 7.4 18.4 7.4 25.5 0l108.9-114.2c31.6-33.2 29.8-88.2-5.6-118.8-30.8-26.7-76.7-21.9-104.9 7.7L288 36.9l-11.1-11.6C248.7-4.4 202.8-9.2 172 17.5c-35.3 30.6-37.2 85.6-5.6 118.8l108.9 114.2zm290 77.6c-11.8-10.7-30.2-10-42.6 0L430.3 402c-11.3 9.1-25.4 14-40 14H272c-8.8 0-16-7.2-16-16s7.2-16 16-16h78.3c15.9 0 30.7-10.9 33.3-26.6 3.3-20-12.1-37.4-31.6-37.4H192c-27 0-53.1 9.3-74.1 26.3L71.4 384H16c-8.8 0-16 7.2-16 16v96c0 8.8 7.2 16 16 16h356.8c14.5 0 28.6-4.9 40-14L564 377c15.2-12.1 16.4-35.3 1.3-48.9z" />
+</svg>
+                <span>E</span>
+            </div>
+
+            <div class="skill-item" data-skill="R">
+                <svg viewBox="0 0 512 512" width="100" title="meteor" class="skill-icon">
+  <path d="M511.328,20.8027c-11.60759,38.70264-34.30724,111.70173-61.30311,187.70077,6.99893,2.09372,13.4042,4,18.60653,5.59368a16.06158,16.06158,0,0,1,9.49854,22.906c-22.106,42.29635-82.69047,152.795-142.47819,214.40356-.99984,1.09373-1.99969,2.5-2.99954,3.49995A194.83046,194.83046,0,1,1,57.085,179.41009c.99985-1,2.40588-2,3.49947-3,61.59994-59.90549,171.97367-120.40473,214.37343-142.4982a16.058,16.058,0,0,1,22.90274,9.49988c1.59351,5.09368,3.49947,11.5936,5.5929,18.59351C379.34818,35.00565,452.43074,12.30281,491.12794.70921A16.18325,16.18325,0,0,1,511.328,20.8027ZM319.951,320.00207A127.98041,127.98041,0,1,0,191.97061,448.00046,127.97573,127.97573,0,0,0,319.951,320.00207Zm-127.98041-31.9996a31.9951,31.9951,0,1,1-31.9951-31.9996A31.959,31.959,0,0,1,191.97061,288.00247Zm31.9951,79.999a15.99755,15.99755,0,1,1-15.99755-15.9998A16.04975,16.04975,0,0,1,223.96571,368.00147Z" />
+</svg>
+                <span>R</span>
+            </div>
+        </div>
+
+        <div class="skill-display">
+            <h2 id="skill-title">Concentration du Ranger</h2>
+            <p id="skill-description">
+                Ashe génère des effets Concentration quand elle attaque. Une fois le maximum d'effets Concentration atteint,
+                Ashe peut lancer Concentration du ranger pour consommer tous les effets, ce qui augmente temporairement sa
+                vitesse d'attaque et transforme son attaque de base en une puissante volée de flèches.
+            </p>
+
+            <div class="skill-image"></div>
+        </div>
+
+    </div>
+</div>
+
+	<!-- ======= master ========== -->
+	
+<div class="tab-content" id="mastery-tab">
+    <div class="mastery-container">
+
+        <div class="mastery-header">
+            <h2>Maîtrise du Champion</h2>
+            <p>Progression, niveau et récompenses obtenues avec Ashe.</p>
+        </div>
+
+        <!-- NIVEAU DE MAÎTRISE -->
         <div class="mastery-level">
             <div class="mastery-icon mastery-5"></div>
             <div class="mastery-info">
