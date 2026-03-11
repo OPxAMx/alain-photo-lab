@@ -831,6 +831,11 @@ document.querySelectorAll(".game-switch span").forEach(btn => {
 function loadGameContent(gameId) {
     const container = document.querySelector(".content-wrapper");
 
+    if (!container) {
+        console.error("[loadGameContent] Conteneur .content-wrapper introuvable. Impossible de charger le contenu du jeu.");
+        return;
+    }
+
     if (gameId === "DV") {
         container.innerHTML = `
             <h1 class="section-title">Classes de Diablo V</h1>
