@@ -863,8 +863,6 @@ function loadGameContent(gameId) {
     }
 }
 
-
-
 window.addEventListener("load", () => {
     selectGame("LOL");
 });
